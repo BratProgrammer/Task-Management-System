@@ -2,6 +2,7 @@ package com.example.Task.Management.System.Models;
 
 import com.example.Task.Management.System.Enums.TaskPriority;
 import com.example.Task.Management.System.Enums.TaskStatus;
+import com.example.Task.Management.System.Models.User.User;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
@@ -30,10 +31,19 @@ public class Task {
 
     private String description;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "comment_id")
     @ToString.Exclude
     private List<Comment> comments;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "allowed_user_id")
+    @ToString.Exclude
+    private List<User> allowedUsers;
+
+    public void addComment(Comment comment) {
+        comments.add(comment);
+    }
 
     @Override
     public final boolean equals(Object o) {

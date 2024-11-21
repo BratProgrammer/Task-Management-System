@@ -1,5 +1,7 @@
 package com.example.Task.Management.System.Services;
 
+import com.example.Task.Management.System.ExceptionHandler.CustomExceptions.CommentNotFoundException;
+import com.example.Task.Management.System.ExceptionHandler.CustomExceptions.PermissionDeniedException;
 import com.example.Task.Management.System.Models.Comment;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.data.domain.Page;
@@ -18,7 +20,7 @@ public interface CommentService {
 
     Comment create(Comment dto);
 
-    Comment patch(Comment id, JsonNode patchNode);
+    Comment patch(Comment id) throws PermissionDeniedException, CommentNotFoundException;
 
     List<Comment> patchMany(Collection<Comment> ids, JsonNode patchNode);
 
@@ -28,5 +30,5 @@ public interface CommentService {
 
     boolean existById(Long id);
 
-    Comment deleteById(Long id);
+    Comment deleteById(Long id) throws PermissionDeniedException, CommentNotFoundException;
 }

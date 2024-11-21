@@ -25,7 +25,6 @@ public class Authority implements GrantedAuthority {
 
     private Role role;
 
-
     private Set<User> users;
 
     @Override

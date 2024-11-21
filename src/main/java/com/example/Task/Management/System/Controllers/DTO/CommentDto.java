@@ -19,4 +19,6 @@ public class CommentDto implements Serializable {
     @NotNull
     @NotBlank
     String lastUsername;
+    @NotNull
+    Long taskId;
 }

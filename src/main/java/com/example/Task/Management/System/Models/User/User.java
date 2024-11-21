@@ -1,5 +1,6 @@
 package com.example.Task.Management.System.Models.User;
 
+import com.example.Task.Management.System.Enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
@@ -28,6 +29,15 @@ public class User implements UserDetails {
     private String password;
 
     private Set<Authority> authorities;
+
+    public boolean hasRole(Role role) {
+        for (Authority authority : authorities) {
+            if (authority.getRole().equals(role)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     @Override
     public final boolean equals(Object o) {

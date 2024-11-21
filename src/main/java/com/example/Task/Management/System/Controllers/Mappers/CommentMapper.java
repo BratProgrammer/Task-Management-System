@@ -14,4 +14,5 @@ public interface CommentMapper {
     Comment partialUpdate(CommentDto commentDto, @MappingTarget Comment comment);
 
     Comment updateWithNull(CommentDto commentDto, @MappingTarget Comment comment);
+
 }
