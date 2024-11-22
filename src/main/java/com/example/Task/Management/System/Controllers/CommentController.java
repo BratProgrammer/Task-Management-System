@@ -16,7 +16,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/rest/user/comments")
+@RequestMapping("/rest/comments")
 @RequiredArgsConstructor
 public class CommentController {
 
@@ -24,12 +24,10 @@ public class CommentController {
 
     private final CommentMapper commentMapper;
 
-    private final ObjectMapper objectMapper;
-
     private final TaskService taskService;
 
     @PostMapping()
-    public CommentDto create(@RequestBody @Valid CommentDto commentDto, @AuthenticationPrincipal User user) {
+    public CommentDto create(@RequestBody @Valid CommentDto commentDto, @AuthenticationPrincipal User user) throws PermissionDeniedException {
         Comment comment = commentMapper.toEntity(commentDto);
         comment.setCreator(user);
         Comment resultComment = commentService.create(comment);
