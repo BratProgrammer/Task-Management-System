@@ -1,6 +1,8 @@
 package com.example.Task.Management.System.ExceptionHandler.CustomExceptions;
 
-public class TaskNotFoundException extends RuntimeException {
+import jakarta.persistence.EntityNotFoundException;
+
+public class TaskNotFoundException extends EntityNotFoundException {
     public TaskNotFoundException(String message) {
         super(message);
     }

@@ -2,14 +2,12 @@ package com.example.Task.Management.System.Controllers;
 
 import com.example.Task.Management.System.Controllers.DTO.CommentDto;
 import com.example.Task.Management.System.Controllers.Mappers.CommentMapper;
-import com.example.Task.Management.System.Enums.Role;
 import com.example.Task.Management.System.ExceptionHandler.CustomExceptions.CommentNotFoundException;
 import com.example.Task.Management.System.ExceptionHandler.CustomExceptions.PermissionDeniedException;
 import com.example.Task.Management.System.Models.Comment;
 import com.example.Task.Management.System.Models.User.User;
 import com.example.Task.Management.System.Services.CommentService;
 import com.example.Task.Management.System.Services.TaskService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -31,7 +29,7 @@ public class CommentController {
         Comment comment = commentMapper.toEntity(commentDto);
         comment.setCreator(user);
         Comment resultComment = commentService.create(comment);
-        taskService.addCommentByTaskId(commentDto.getTaskId(), resultComment);
+        taskService.addCommentByTaskId(commentDto.taskId(), resultComment);
         return commentMapper.toDto(resultComment);
     }
 

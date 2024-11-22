@@ -1,5 +1,7 @@
 package com.example.Task.Management.System.Services;
 
+import com.example.Task.Management.System.Controllers.DTO.TaskPatchDto;
+import com.example.Task.Management.System.Controllers.Mappers.TaskMapper;
 import com.example.Task.Management.System.ExceptionHandler.CustomExceptions.PermissionDeniedException;
 import com.example.Task.Management.System.ExceptionHandler.CustomExceptions.TaskNotFoundException;
 import com.example.Task.Management.System.Models.Comment;
@@ -22,6 +24,8 @@ public class TaskService {
 
     private final PermissionCheckerService permissionCheckerService;
 
+    private final TaskMapper taskMapper;
+
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public void addCommentByTaskId(Long taskId, Comment comment) throws PermissionDeniedException {
         Optional<Task> taskOptional = taskRepository.findById(taskId);
@@ -32,7 +36,7 @@ public class TaskService {
 
         Task task = taskOptional.get();
 
-        permissionCheckerService.checkPermissionForTask(task);
+        permissionCheckerService.checkAccessToTask(task);
 
         task.addComment(comment);
 
@@ -62,8 +66,18 @@ public class TaskService {
             throw new TaskNotFoundException("Task with id:" + id + " not found");
         }
 
-        permissionCheckerService.checkPermissionForTask(taskOptional.get());
+        permissionCheckerService.checkAccessToTask(taskOptional.get());
         taskRepository.deleteById(id);
+    }
+
+    public Task patch(Long id, TaskPatchDto taskDto) throws PermissionDeniedException {
+        Task task = findById(id);
+
+        permissionCheckerService.checkAccessToTask(task);
+
+        taskMapper.partialUpdate(taskDto, task);
+
+        return taskRepository.save(task);
     }
 
 }

@@ -45,7 +45,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public Comment patch(Comment comment) throws PermissionDeniedException, CommentNotFoundException {
         if (comment != null) {
-            permissionCheckerService.checkPermissionForComment(comment);
+            permissionCheckerService.checkAccessToComment(comment);
             return commentRepository.save(comment);
         } else {
             throw new CommentNotFoundException("Comment not found");
@@ -76,7 +76,7 @@ public class CommentServiceImpl implements CommentService {
     public Comment deleteById(Long id) throws PermissionDeniedException, CommentNotFoundException {
         Comment comment = commentRepository.findById(id).orElse(null);
         if (comment != null) {
-            permissionCheckerService.checkPermissionForComment(comment);
+            permissionCheckerService.checkAccessToComment(comment);
             commentRepository.delete(comment);
         } else {
             throw new CommentNotFoundException("Comment with id:" + id + " not found");

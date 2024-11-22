@@ -2,12 +2,12 @@ package com.example.Task.Management.System.Models.User;
 
 import com.example.Task.Management.System.Enums.Role;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.proxy.HibernateProxy;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
 import java.util.Objects;
 import java.util.Set;
 
@@ -16,7 +16,7 @@ import java.util.Set;
 @Setter
 @ToString
 @RequiredArgsConstructor
-public class User implements UserDetails {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
@@ -28,6 +28,7 @@ public class User implements UserDetails {
 
     private String password;
 
+    @Getter
     private Set<Authority> authorities;
 
     public boolean hasRole(Role role) {
@@ -55,8 +56,4 @@ public class User implements UserDetails {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
-    }
 }

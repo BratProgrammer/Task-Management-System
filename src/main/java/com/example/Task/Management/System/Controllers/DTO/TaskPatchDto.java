@@ -8,16 +8,14 @@ import lombok.EqualsAndHashCode;
 import lombok.Value;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * DTO for {@link com.example.Task.Management.System.Models.Task}
  */
 @EqualsAndHashCode(callSuper = true)
 @Value
-public record TaskDto(Long id, @NotNull(message = "status not specified") TaskStatus status,
-                      @NotNull(message = "priority not specified") TaskPriority priority,
-                      @NotNull(message = "header not specified") @NotBlank(message = "header is blank") String header,
-                      String description,
-                      List<CommentDto> comments) implements Serializable {
+public record TaskPatchDto(
+        @NotNull(message = "Status not specified") TaskStatus status,
+        @NotNull(message = "Priority not specified") TaskPriority priority,
+        @NotNull(message = "Header not specified") @NotBlank(message = "Header is blank") String header) implements Serializable {
 }
