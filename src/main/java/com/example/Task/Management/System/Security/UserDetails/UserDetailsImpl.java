@@ -1,8 +1,8 @@
 package com.example.Task.Management.System.Security.UserDetails;
 
-import com.example.Task.Management.System.Enums.Role;
-import com.example.Task.Management.System.Models.User.Authority;
-import com.example.Task.Management.System.Models.User.User;
+import com.example.Task.Management.System.Models.User;
+import com.example.Task.Management.System.Security.Authotity.Authority;
+import com.example.Task.Management.System.Security.Authotity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;

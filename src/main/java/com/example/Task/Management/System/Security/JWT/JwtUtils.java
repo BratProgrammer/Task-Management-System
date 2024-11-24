@@ -15,6 +15,8 @@ import org.springframework.web.util.WebUtils;
 import java.security.Key;
 import java.util.Date;
 
+import static io.jsonwebtoken.Jwts.builder;
+
 @Component
 @Slf4j
 public class JwtUtils {
@@ -31,7 +33,7 @@ public class JwtUtils {
     public String generateToken(Authentication authentication) {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
-        return Jwts.builder()
+        return builder()
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt((new Date()))
                 .setExpiration(new Date((new Date()).getTime() + lifetime))

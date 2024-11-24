@@ -3,6 +3,7 @@ package com.example.Task.Management.System.ExceptionHandler;
 import com.example.Task.Management.System.ExceptionHandler.CustomExceptions.CommentNotFoundException;
 import com.example.Task.Management.System.ExceptionHandler.CustomExceptions.PermissionDeniedException;
 import com.example.Task.Management.System.ExceptionHandler.CustomExceptions.TaskNotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -22,6 +23,12 @@ public class GlobalExceptionHandler {
                 errors.put(error.getField(), error.getDefaultMessage())
         );
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<String> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
+        String message = "Username or email already exists.";
+        return new ResponseEntity<>(message, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(TaskNotFoundException.class)

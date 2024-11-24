@@ -1,12 +1,13 @@
 package com.example.Task.Management.System.Controllers.DTO;
 
+import com.example.Task.Management.System.Models.User;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.io.Serializable;
 
 /**
- * DTO for {@link com.example.Task.Management.System.Models.User.User}
+ * DTO for {@link User}
  */
 public record UserDto(
         @NotNull(message = "ID not specified")

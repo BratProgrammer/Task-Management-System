@@ -5,7 +5,7 @@ import com.example.Task.Management.System.Controllers.Mappers.CommentMapper;
 import com.example.Task.Management.System.ExceptionHandler.CustomExceptions.CommentNotFoundException;
 import com.example.Task.Management.System.ExceptionHandler.CustomExceptions.PermissionDeniedException;
 import com.example.Task.Management.System.Models.Comment;
-import com.example.Task.Management.System.Models.User.User;
+import com.example.Task.Management.System.Models.User;
 import com.example.Task.Management.System.Services.CommentService;
 import com.example.Task.Management.System.Services.TaskService;
 import jakarta.validation.Valid;

@@ -1,10 +1,10 @@
 package com.example.Task.Management.System.Services;
 
-import com.example.Task.Management.System.Enums.Role;
 import com.example.Task.Management.System.ExceptionHandler.CustomExceptions.PermissionDeniedException;
 import com.example.Task.Management.System.Models.Comment;
 import com.example.Task.Management.System.Models.Task;
-import com.example.Task.Management.System.Models.User.User;
+import com.example.Task.Management.System.Models.User;
+import com.example.Task.Management.System.Security.Authotity.Role;
 import com.example.Task.Management.System.Security.UserDetails.UserDetailsImpl;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ public class PermissionCheckerService {
 
     public void checkAccessToComment(Comment comment) throws PermissionDeniedException {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (!(userDetails.hasRole(Role.ADMIN) || comment.getCreator().getId().equals(userDetails.getId()))) {
+        if (!(userDetails.hasRole(Role.ROLE_ADMIN) || comment.getCreator().getId().equals(userDetails.getId()))) {
             throw new PermissionDeniedException("Access to comment denied");
         }
     }
@@ -22,7 +22,7 @@ public class PermissionCheckerService {
     public void checkAccessToTask(Task task) throws PermissionDeniedException {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        if (userDetails.hasRole(Role.ADMIN)) {
+        if (userDetails.hasRole(Role.ROLE_ADMIN)) {
             return;
         }
 
@@ -38,7 +38,7 @@ public class PermissionCheckerService {
     public void checkAccessToUserDataById(Long userId) {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        if (userDetails.hasRole(Role.ADMIN) || userDetails.getId().equals(userId)) {
+        if (userDetails.hasRole(Role.ROLE_ADMIN) || userDetails.getId().equals(userId)) {
             return;
         }
 

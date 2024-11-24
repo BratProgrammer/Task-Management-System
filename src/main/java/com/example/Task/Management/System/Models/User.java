@@ -1,6 +1,7 @@
-package com.example.Task.Management.System.Models.User;
+package com.example.Task.Management.System.Models;
 
-import com.example.Task.Management.System.Enums.Role;
+import com.example.Task.Management.System.Security.Authotity.Authority;
+import com.example.Task.Management.System.Security.Authotity.Role;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -22,10 +23,13 @@ public class User {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @Column(unique = true, nullable = false)
     private String username;
 
+    @Column(unique = true, nullable = false)
     private String email;
 
+    @Column(nullable = false)
     private String password;
 
     @Getter

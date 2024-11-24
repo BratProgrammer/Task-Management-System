@@ -6,7 +6,7 @@ import com.example.Task.Management.System.ExceptionHandler.CustomExceptions.Perm
 import com.example.Task.Management.System.ExceptionHandler.CustomExceptions.TaskNotFoundException;
 import com.example.Task.Management.System.Models.Comment;
 import com.example.Task.Management.System.Models.Task;
-import com.example.Task.Management.System.Models.User.User;
+import com.example.Task.Management.System.Models.User;
 import com.example.Task.Management.System.Repositories.TaskRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;

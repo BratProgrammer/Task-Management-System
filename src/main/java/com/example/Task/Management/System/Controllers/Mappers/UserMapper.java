@@ -1,7 +1,7 @@
 package com.example.Task.Management.System.Controllers.Mappers;
 
 import com.example.Task.Management.System.Controllers.DTO.UserDto;
-import com.example.Task.Management.System.Models.User.User;
+import com.example.Task.Management.System.Models.User;
 import org.mapstruct.*;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
