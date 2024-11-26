@@ -8,6 +8,8 @@ import com.example.Task.Management.System.Security.Authotity.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.Set;
@@ -21,25 +23,26 @@ public class DataInitializer implements CommandLineRunner {
     private final AuthorityRepository authorityRepository;
 
     @Override
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public void run(String... args) throws Exception {
         Optional<User> adminOptional = userRepository.findByAuthorities_Role(Role.ROLE_ADMIN);
 
         if (adminOptional.isEmpty()) {
             User admin = new User();
 
-            Optional<Authority> authorityOptional = authorityRepository.findByRole(Role.ROLE_ADMIN);
+            Authority authority = authorityRepository.findByRole(Role.ROLE_ADMIN);
 
-            if (authorityOptional.isEmpty()) {
-                Authority authority = new Authority(Role.ROLE_ADMIN);
-                authorityRepository.save(authority);
-                admin.setAuthorities(Set.of(authority));
-            } else {
-                admin.setAuthorities(Set.of(authorityOptional.get()));
+            if (authority == null) {
+                authority = new Authority(Role.ROLE_ADMIN);
+                authority = authorityRepository.save(authority);
             }
+
+            admin.setAuthorities(Set.of(authority));
 
             admin.setEmail("admin@admin.com");
             admin.setUsername("admin");
             admin.setPassword("admin");
+
 
             userRepository.save(admin);
         }

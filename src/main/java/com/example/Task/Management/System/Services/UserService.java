@@ -5,6 +5,8 @@ import com.example.Task.Management.System.ExceptionHandler.CustomExceptions.User
 import com.example.Task.Management.System.Models.User;
 import com.example.Task.Management.System.Security.Controller.DTO.RegistrationRequest;
 
+import java.util.Optional;
+
 public interface UserService {
 
     User findById(Long id) throws UserNotFoundException;
@@ -16,4 +18,6 @@ public interface UserService {
     boolean existsByEmail(String email);
 
     void createUser(RegistrationRequest registrationRequest);
+
+    public Optional<User> findByEmail(String email);
 }

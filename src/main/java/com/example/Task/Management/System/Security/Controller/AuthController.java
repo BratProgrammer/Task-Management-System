@@ -1,5 +1,6 @@
 package com.example.Task.Management.System.Security.Controller;
 
+import com.example.Task.Management.System.Models.User;
 import com.example.Task.Management.System.Security.Controller.DTO.AuthorizationRequest;
 import com.example.Task.Management.System.Security.Controller.DTO.RegistrationRequest;
 import com.example.Task.Management.System.Security.JWT.JwtUtils;
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
@@ -37,9 +40,13 @@ public class AuthController {
     public ResponseEntity<?> signIn(@RequestBody AuthorizationRequest authorizationRequest) {
         Authentication authentication;
         try {
+            Optional<User> userOptional = userService.findByEmail(authorizationRequest.getEmail());
+            if (userOptional.isEmpty()) {
+                throw new BadCredentialsException("User with email:" + authorizationRequest.getEmail() + " not found");
+            }
             authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authorizationRequest.getEmail(), authorizationRequest.getPassword()));
         } catch (BadCredentialsException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
 
         SecurityContextHolder.getContext().setAuthentication(authentication);

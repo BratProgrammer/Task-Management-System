@@ -64,14 +64,19 @@ public class UserServiceImpl implements UserService {
         user.setUsername(registrationRequest.getUsername());
         user.setEmail(registrationRequest.getEmail());
         user.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
-        Optional<Authority> authorityOptional = authorityRepository.findByRole(Role.ROLE_USER);
+        Authority authority = authorityRepository.findByRole(Role.ROLE_USER);
 
-        if (authorityOptional.isEmpty()) {
+        if (authority == null) {
             user.setAuthorities(Set.of(new Authority(Role.ROLE_USER)));
         } else {
-            user.setAuthorities(Set.of(authorityOptional.get()));
+            user.setAuthorities(Set.of(authority));
         }
 
         userRepository.save(user);
+    }
+
+    @Override
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 }

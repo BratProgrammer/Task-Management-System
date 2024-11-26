@@ -18,6 +18,7 @@ import java.util.Set;
 @Setter
 @ToString
 @RequiredArgsConstructor
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -34,6 +35,7 @@ public class User {
     private String password;
 
     @Getter
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private Set<Authority> authorities = new HashSet<>();
 
     public boolean hasRole(Role role) {

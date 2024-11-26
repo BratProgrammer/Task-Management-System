@@ -1,7 +1,6 @@
 package com.example.Task.Management.System.Security.Config;
 
 import com.example.Task.Management.System.Security.JWT.AuthTokenFilter;
-import com.example.Task.Management.System.Security.UserDetails.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +14,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -29,7 +29,7 @@ public class SecurityConfig {
 
     private final AuthTokenFilter authTokenFilter;
 
-    private final UserDetailsServiceImpl userDetailsService;
+    private final UserDetailsService userDetailsService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -65,9 +65,9 @@ public class SecurityConfig {
                         .requestMatchers("/rest/tasks/**").authenticated()
                         .requestMatchers("/rest/user/**").authenticated()
                         .requestMatchers("/rest/comments/**").authenticated()
-                        .requestMatchers(HttpMethod.POST, "/rest/tasks").hasRole("ROLE_ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/rest/tasks/add_executor").hasRole("ROLE_ADMIN")
-                        .anyRequest().permitAll())
+                        .requestMatchers(HttpMethod.POST, "/rest/tasks").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/rest/tasks/add_executor").hasRole("ADMIN")
+                        .anyRequest().authenticated())
                 .addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
         http.authenticationProvider(authenticationProvider());

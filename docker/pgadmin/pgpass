@@ -1,1 +1,1 @@
-postgres:5432:task_managment_db:admin:password
+postgres:5432:task_management_db:admin:password
