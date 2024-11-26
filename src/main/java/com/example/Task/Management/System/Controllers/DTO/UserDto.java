@@ -17,7 +17,4 @@ public record UserDto(
         String username,
         @NotNull(message = "Email not specified")
         @NotBlank(message = "Email is blank")
-        String email,
-        @NotNull(message = "Password not specified")
-        @NotBlank(message = "Password is blank")
-        String password) implements Serializable {  }
+        String email) implements Serializable {  }

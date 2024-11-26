@@ -3,7 +3,7 @@ package com.example.Task.Management.System.Security.Controller;
 import com.example.Task.Management.System.Security.Controller.DTO.AuthorizationRequest;
 import com.example.Task.Management.System.Security.Controller.DTO.RegistrationRequest;
 import com.example.Task.Management.System.Security.JWT.JwtUtils;
-import com.example.Task.Management.System.Services.UserService;
+import com.example.Task.Management.System.Services.Implementations.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -27,7 +27,7 @@ public class AuthController {
 
     private final PasswordEncoder passwordEncoder;
 
-    private final UserService userService;
+    private final UserServiceImpl userService;
 
     private final AuthenticationManager authenticationManager;
 

@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CommentService {
-    Page<Comment> getList(Pageable pageable);
+    Page<Comment> getPageable(Pageable pageable);
 
     Optional<Comment> getOne(Long id);
 
@@ -31,4 +31,6 @@ public interface CommentService {
     boolean existById(Long id);
 
     Comment deleteById(Long id) throws PermissionDeniedException, CommentNotFoundException;
+
+    Comment findById(Long id);
 }

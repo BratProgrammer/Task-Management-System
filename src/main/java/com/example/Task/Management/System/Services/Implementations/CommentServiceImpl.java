@@ -1,15 +1,21 @@
-package com.example.Task.Management.System.Services;
+package com.example.Task.Management.System.Services.Implementations;
 
 import com.example.Task.Management.System.ExceptionHandler.CustomExceptions.CommentNotFoundException;
 import com.example.Task.Management.System.ExceptionHandler.CustomExceptions.PermissionDeniedException;
 import com.example.Task.Management.System.Models.Comment;
 import com.example.Task.Management.System.Repositories.CommentRepository;
+import com.example.Task.Management.System.Security.UserDetails.UserDetailsImpl;
+import com.example.Task.Management.System.Services.CommentService;
+import com.example.Task.Management.System.Services.PermissionCheckerService;
+import com.example.Task.Management.System.Services.UserService;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -22,8 +28,10 @@ public class CommentServiceImpl implements CommentService {
 
     private final PermissionCheckerService permissionCheckerService;
 
+    private final UserService userService;
+
     @Override
-    public Page<Comment> getList(Pageable pageable) {
+    public Page<Comment> getPageable(Pageable pageable) {
         return commentRepository.findAll(pageable);
     }
 
@@ -38,8 +46,11 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Comment create(Comment dto) {
-        return commentRepository.save(dto);
+    public Comment create(Comment comment) {
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        comment.setCreator(userService.findById(userDetails.getId()));
+        comment.setCreationDateTime(LocalDateTime.now());
+        return commentRepository.save(comment);
     }
 
     @Override
@@ -79,6 +90,15 @@ public class CommentServiceImpl implements CommentService {
             permissionCheckerService.checkAccessToComment(comment);
             commentRepository.delete(comment);
         } else {
+            throw new CommentNotFoundException("Comment with id:" + id + " not found");
+        }
+        return comment;
+    }
+
+    @Override
+    public Comment findById(Long id) {
+        Comment comment = commentRepository.findById(id).orElse(null);
+        if (comment == null) {
             throw new CommentNotFoundException("Comment with id:" + id + " not found");
         }
         return comment;

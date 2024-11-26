@@ -9,6 +9,8 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.proxy.HibernateProxy;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -31,12 +33,15 @@ public class Task {
 
     private String header;
 
+    @Column(name = "creation_date_time")
+    private LocalDateTime creationDateTime;
+
     private String description;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "comment_id")
     @ToString.Exclude
-    private List<Comment> comments;
+    private List<Comment> comments = new ArrayList<>();;
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "allowed_user_id")
@@ -44,6 +49,7 @@ public class Task {
     private List<User> allowedUsers;
 
     public void addComment(Comment comment) {
+        comment.setParentTask(this);
         comments.add(comment);
     }
 

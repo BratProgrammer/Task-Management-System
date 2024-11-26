@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -21,5 +22,6 @@ public record TaskDto(
         @NotBlank(message = "header is blank")
         String header,
         String description,
+        LocalDateTime creationDateTime,
         List<CommentDto> comments) implements Serializable {
 }

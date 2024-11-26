@@ -5,12 +5,12 @@ import com.example.Task.Management.System.Controllers.Mappers.CommentMapper;
 import com.example.Task.Management.System.ExceptionHandler.CustomExceptions.CommentNotFoundException;
 import com.example.Task.Management.System.ExceptionHandler.CustomExceptions.PermissionDeniedException;
 import com.example.Task.Management.System.Models.Comment;
-import com.example.Task.Management.System.Models.User;
 import com.example.Task.Management.System.Services.CommentService;
-import com.example.Task.Management.System.Services.TaskService;
+import com.example.Task.Management.System.Services.Implementations.TaskServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,12 +22,11 @@ public class CommentController {
 
     private final CommentMapper commentMapper;
 
-    private final TaskService taskService;
+    private final TaskServiceImpl taskService;
 
     @PostMapping()
-    public CommentDto create(@RequestBody @Valid CommentDto commentDto, @AuthenticationPrincipal User user) throws PermissionDeniedException {
+    public CommentDto create(@RequestBody @Valid CommentDto commentDto) throws PermissionDeniedException {
         Comment comment = commentMapper.toEntity(commentDto);
-        comment.setCreator(user);
         Comment resultComment = commentService.create(comment);
         taskService.addCommentByTaskId(commentDto.taskId(), resultComment);
         return commentMapper.toDto(resultComment);
@@ -43,6 +42,18 @@ public class CommentController {
         return commentMapper.toDto(commentService.patch(commentMapper.toEntity(commentDto)));
     }
 
+
+    @GetMapping("/{id}")
+    public CommentDto getById(@PathVariable Long id) {
+        return commentMapper.toDto(commentService.findById(id));
+    }
+
+    @GetMapping
+    public Page<CommentDto> getList(Pageable pageable) {
+        Page<Comment> comments = commentService.getPageable(pageable);
+        Page<CommentDto> commentDtoPage = comments.map(commentMapper::toDto);
+        return commentDtoPage;
+    }
 
 
 
