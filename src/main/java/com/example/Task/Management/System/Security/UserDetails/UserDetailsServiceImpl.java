@@ -16,12 +16,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
+    // Переопределяем метод на поиск по email
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> userOptional = userRepository.findByUsername(username);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Optional<User> userOptional = userRepository.findByEmail(email);
 
         if (userOptional.isEmpty()) {
-            throw new UsernameNotFoundException("User with username:" + username + " not found");
+            throw new UsernameNotFoundException("User with username:" + email + " not found");
         }
 
         return UserDetailsImpl.build(userOptional.get());

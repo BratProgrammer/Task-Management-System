@@ -1,6 +1,6 @@
 package com.example.Task.Management.System.Security.Config;
 
-import com.example.Task.Management.System.Security.JWT.AuthTokenFilter;
+import com.example.Task.Management.System.Security.Filters.AuthTokenFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

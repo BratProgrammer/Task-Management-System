@@ -3,7 +3,7 @@ package com.example.Task.Management.System.Security.Controller;
 import com.example.Task.Management.System.Models.User;
 import com.example.Task.Management.System.Security.Controller.DTO.AuthorizationRequest;
 import com.example.Task.Management.System.Security.Controller.DTO.RegistrationRequest;
-import com.example.Task.Management.System.Security.JWT.JwtUtils;
+import com.example.Task.Management.System.Security.Filters.JwtUtils;
 import com.example.Task.Management.System.Services.Implementations.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +44,7 @@ public class AuthController {
             if (userOptional.isEmpty()) {
                 throw new BadCredentialsException("User with email:" + authorizationRequest.getEmail() + " not found");
             }
-            authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authorizationRequest.getEmail(), authorizationRequest.getPassword()));
+            authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authorizationRequest.getEmail(),authorizationRequest.getPassword()));
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }

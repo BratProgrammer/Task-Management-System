@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -66,11 +67,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
         Authority authority = authorityRepository.findByRole(Role.ROLE_USER);
 
-        if (authority == null) {
-            user.setAuthorities(Set.of(new Authority(Role.ROLE_USER)));
-        } else {
-            user.setAuthorities(Set.of(authority));
-        }
+        user.setAuthorities(Set.of(Objects.requireNonNullElseGet(authority, () -> new Authority(Role.ROLE_USER))));
 
         userRepository.save(user);
     }
