@@ -7,6 +7,7 @@ import com.example.Task.Management.System.Security.Authotity.Authority;
 import com.example.Task.Management.System.Security.Authotity.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,8 @@ public class DataInitializer implements CommandLineRunner {
     private final UserRepository userRepository;
 
     private final AuthorityRepository authorityRepository;
+
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional(isolation = Isolation.SERIALIZABLE)
@@ -41,7 +44,7 @@ public class DataInitializer implements CommandLineRunner {
 
             admin.setEmail("admin@admin.com");
             admin.setUsername("admin");
-            admin.setPassword("admin");
+            admin.setPassword(passwordEncoder.encode("admin"));
 
 
             userRepository.save(admin);
